@@ -4,7 +4,7 @@ import { body, validationResult } from 'express-validator';
 const router = express.Router();
 
 router.get('/api/users', (req, res) => {
-  res.send('It is working');
+  res.send('it is working');
 });
 
 router.post(
@@ -18,7 +18,7 @@ router.post(
   ],
   (req: Request, res: Response) => {
     const errors = validationResult(req);
-    if (!errors.isEmpty) {
+    if (!errors.isEmpty()) {
       return res.status(400).send(errors.array());
     }
     const { email, password } = req.body;

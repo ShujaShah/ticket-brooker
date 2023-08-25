@@ -12,10 +12,14 @@ const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
     return res.status(400).send({ errors: formattedErrors });
   }
   if (err instanceof DatabaseConnectionError) {
-    console.log('handling this error as db connection error');
+    res.status(500).send({ errors: [{ message: err.reason }] });
   }
   res.status(400).send({
-    message: 'Something went wrong💥',
+    errors: [
+      {
+        message: 'Something went Wrong 💥💥💥',
+      },
+    ],
   });
 };
 

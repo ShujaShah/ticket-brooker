@@ -1,7 +1,8 @@
 import express, { Request, Response } from 'express';
+import { User } from '../models/user';
 import { body, validationResult } from 'express-validator';
 import { RequestValidationError } from '../errors/request-validation-error';
-import { DatabaseConnectionError } from '../errors/database-connection-error';
+
 const router = express.Router();
 
 router.get('/api/users', (req, res) => {
@@ -22,10 +23,20 @@ router.post(
     if (!errors.isEmpty()) {
       throw new RequestValidationError(errors.array());
     }
+    //Check if the user is already registered?
     const { email, password } = req.body;
-    console.log('creating a user....');
-    throw new DatabaseConnectionError();
-    res.send({});
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      console.log('Email already in use');
+      return res.send({});
+    }
+    //Save the user, we have already created the build function in schema
+    const user = User.build({
+      email,
+      password,
+    });
+    await user.save();
+    res.status(201).send(user);
   }
 );
 

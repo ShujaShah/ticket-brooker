@@ -45,7 +45,7 @@ router.post(
         id: user.id,
         email: user.email,
       },
-      'asdf'
+      process.env.JWT_KEY! // the exclamation mark tell typescript not to worry as we have already defined it..
     );
 
     //Store the jwt on session object
